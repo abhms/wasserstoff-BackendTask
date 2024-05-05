@@ -1,8 +1,9 @@
 import { User } from "../models/user.js";
-
+import { File } from "../models/file.js";
+import {uploadFileToS3} from "../services/s3.js"
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import {detectLabelsff} from "../services/anno.js"
 // Create a new user
 export const createUser = async (req, res) => {
   try {
@@ -64,3 +65,29 @@ export const loginUser = async (req, res) => {
 };
 
 
+export const upload = async (req, res) => {
+  try {
+      const { userId } = req.body
+      // const { userId } = req.session;
+      const image = req.files;
+      console.log(image,"kj")
+      if (!image) {
+          return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      const { Location, Key } = await uploadFileToS3(image); 
+      // console.log(Location,Key,"lllllllllll")
+      const annotations = await detectLabelsff(Key); 
+      const newData = new File({
+          userId,
+          annotations,
+          path: Location,
+          file: Key
+      });
+      const saved = await newData.save();
+      res.status(201).json({ message: "Your file successfully uploaded",saved });
+  } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};

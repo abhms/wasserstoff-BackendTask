@@ -16,27 +16,27 @@ app.use(bodyParser.json());
 // Define a route
 app.use('/api', routes); 
 // Define a route for handling 404 errors
-app.use((req, res) => {
-  res.status(404).send('Page not found');
-});
+// app.use((req, res) => {
+//   res.status(404).send('Page not found');
+// });
 // const visionClient = new ImageAnnotatorClient(process.env.VISION_API);
-const visionClient = new ImageAnnotatorClient();
-// visionClient.labelDetection("./raccoons.jpg")
-console.log(visionClient,"visionClientvisionClient")
+// const visionClient = new ImageAnnotatorClient();
+// // visionClient.labelDetection("./raccoons.jpg")
+// console.log(visionClient,"visionClientvisionClient")
 
-async function callAsyncBatchAnnotateFiles() {
-  // Construct request
+// async function callAsyncBatchAnnotateFiles() {
+//   // Construct request
  
-  const request = {
-    requests:"abhishek",
-  };
-  // Run request
-  const [operation] = await visionClient.asyncBatchAnnotateFiles(request);
-  // const [response] = await operation.promise();
-  console.log(operation,"resssss",request);
-}
+//   const request = {
+//     requests:"abhishek",
+//   };
+//   // Run request
+//   const [operation] = await visionClient.asyncBatchAnnotateFiles(request);
+//   // const [response] = await operation.promise();
+//   console.log(operation,"resssss",request);
+// }
 
-callAsyncBatchAnnotateFiles();
+// callAsyncBatchAnnotateFiles();
 // Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
