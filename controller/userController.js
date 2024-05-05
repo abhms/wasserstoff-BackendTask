@@ -65,30 +65,48 @@ export const loginUser = async (req, res) => {
 };
 
 
+// This function handles file uploads
 export const upload = async (req, res) => {
   try {
-      const userId = req.user._id;
-      console.log(req.user,"ppp")
-      const image = req.files;
-      console.log(image,"kj")
-      if (!image) {
-          return res.status(400).json({ message: 'No file uploaded' });
-      }
+    // Extract user ID from the request object
+    const userId = req.user._id;
+    
+    // Log the user object to the console with tag "ppp"
+    console.log(req.user,"ppp");
+    
+    // Extract uploaded image files from the request object
+    const image = req.files;
+    
+    // Log the image variable to the console with tag "kj"
+    console.log(image,"kj");
+    
+    // Check if there are any uploaded files
+    if (!image) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
 
-      const { Location, Key } = await uploadFileToS3(image); 
-      // console.log(Location,Key,"lllllllllll")
-      const annotations = await detectLabelsff(Key); 
-      const newData = new File({
-          userId,
-          annotations,
-          path: Location,
-          file: Key
-      });
-      const saved = await newData.save();
-      res.status(201).json({ message: "Your file successfully uploaded",saved });
+    // Upload the files to Amazon S3 and get the location and key
+    const { Location, Key } = await uploadFileToS3(image);
+    
+    // Detect labels in the uploaded image using a function and the key
+    const annotations = await detectLabelsff(Key);
+    
+    // Create a new instance of a File object with relevant data
+    const newData = new File({
+      userId,
+      annotations,
+      path: Location,
+      file: Key
+    });
+    
+    // Save the new File object to the database
+    const saved = await newData.save();
+    
+    // Send a success response to the client with a success message and saved data
+    res.status(201).json({ message: "Your file successfully uploaded", saved });
   } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+    // If an error occurs, log it to the console and send an internal server error response to the client
+    console.error(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-

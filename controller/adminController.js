@@ -9,73 +9,111 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { createObjectCsvWriter as createCsvWriter } from "csv-writer";
+// This function updates the status of a file to "Rejected"
 export const UpdateStatusReject = async (req, res) => {
   try {
+    // Log the request body to the console with tag "pppppppp"
     console.log(req.body, "pppppppp");
+    
+    // Check if fileID is provided in the request body
     if (!req.body.fileID) {
       return res.status(400).json({ message: "Please Provide File ID" });
     }
+    
+    // Extract fileID from the request body
     const { fileID } = req.body;
 
+    // Find and update the file status to "Rejected" in the database
     const UploadedFile = await File.findByIdAndUpdate(
       { _id: fileID },
       {
         status: "Rejected",
       }
     );
+    
+    // Log the updated file to the console
     console.log(UploadedFile);
+    
+    // Send a success response to the client
     res
       .status(201)
       .json({ message: "File status successfully updated to Reject" });
   } catch (error) {
+    // If an error occurs, send an error response to the client
     res.status(400).json({ message: error.message });
   }
 };
+
+// This function updates the status of a file to "Review"
 export const UpdateStatusReview = async (req, res) => {
   try {
+    // Log the request body to the console with tag "pppppppp"
     console.log(req.body, "pppppppp");
+    
+    // Check if fileID is provided in the request body
     if (!req.body.fileID) {
       return res.status(400).json({ message: "Please Provide File ID" });
     }
+    
+    // Extract fileID from the request body
     const { fileID } = req.body;
 
+    // Find and update the file status to "Review" in the database
     const UploadedFile = await File.findByIdAndUpdate(
       { _id: fileID },
       {
         status: "Review",
       }
     );
+    
+    // Log the updated file to the console
     console.log(UploadedFile);
+    
+    // Send a success response to the client
     res
       .status(201)
       .json({ message: "File status successfully updated to Review" });
   } catch (error) {
+    // If an error occurs, send an error response to the client
     res.status(400).json({ message: error.message });
   }
 };
 
+// This function updates the status of a file to "Approve"
 export const UpdateStatusApprove = async (req, res) => {
   try {
+    // Log the request body to the console with tag "pppppppp"
     console.log(req.body, "pppppppp");
+    
+    // Check if fileID is provided in the request body
     if (!req.body.fileID) {
       return res.status(400).json({ message: "Please Provide File ID" });
     }
+    
+    // Extract fileID from the request body
     const { fileID } = req.body;
 
+    // Find and update the file status to "Approve" in the database
     const UploadedFile = await File.findByIdAndUpdate(
       { _id: fileID },
       {
         status: "Approve",
       }
     );
+    
+    // Log the updated file to the console
     console.log(UploadedFile);
+    
+    // Send a success response to the client
     res
       .status(201)
       .json({ message: "File status successfully updated to Approve" });
   } catch (error) {
+    // If an error occurs, send an error response to the client
     res.status(400).json({ message: error.message });
   }
 };
+
 
 export const DownloadIntoCSV = async (req, res) => {
   const csvPath = path.join(__dirname, "File.csv"); // Ensure you define __dirname if using ES modules

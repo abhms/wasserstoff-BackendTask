@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from "bcrypt";
+
 
 const validRoles = ['user', 'admin'];
 const FileSchema = new mongoose.Schema({
@@ -14,6 +14,10 @@ const FileSchema = new mongoose.Schema({
     },
     annotations: {
         type: Array,
+        required: true
+    },
+    file: {
+        type: String,
         required: true
     },
     status: {
