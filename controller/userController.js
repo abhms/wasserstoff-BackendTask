@@ -67,8 +67,8 @@ export const loginUser = async (req, res) => {
 
 export const upload = async (req, res) => {
   try {
-      const { userId } = req.body
-      // const { userId } = req.session;
+      const userId = req.user._id;
+      console.log(req.user,"ppp")
       const image = req.files;
       console.log(image,"kj")
       if (!image) {
@@ -91,3 +91,4 @@ export const upload = async (req, res) => {
       return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
